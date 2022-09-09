@@ -2,6 +2,67 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
+import AddNiCoinButton from 'components/AddNiCoinButton'
+import { useMetamask } from 'use-metamask'
+import { ComponentType, useCallback, useEffect, useRef, useState, FunctionComponent, MutableRefObject } from 'react'
+import Button from '@mui/material/Button';
+import transferNi from 'actions/transferNi';
+
+type DisplayAccountProps = {
+  showBalance?: boolean;
+};
+const DisplayAccount:React.FunctionComponent<DisplayAccountProps> = ({ showBalance = false }) => {
+  const { getAccounts } = useMetamask();
+  const [accounts,setAccounts] = useState<any[]>();
+  const loadAccounts = useCallback(async () => {
+    var _accounts = await getAccounts();
+    setAccounts(_accounts);
+  },[getAccounts,setAccounts]);
+  useEffect(() => {
+    loadAccounts();
+  },[loadAccounts]);
+  // return <div>[DisplayAccount]</div>
+  return <div>
+    {/* <pre>{JSON.stringify(accounts,null,2)}</pre> */}
+    <strong>Account: </strong>
+    {!accounts?.length ? <span>No account connected.</span> : <span>{accounts[0]}</span>}
+  </div>
+};
+//const TransferPanel = () => <h4>[TransferPanel]</h4>;
+const TransferPanel:FunctionComponent<{ account:string }> = ({account}) => {
+  const toRef = useRef<HTMLInputElement>();
+  const amountRef = useRef<HTMLInputElement>();
+  const send = useCallback(async () => {
+    var to = toRef.current?.value;
+    var amount = amountRef.current?.value;
+    // alert(JSON.stringify({ to, amount }));
+    await transferNi({ to, amount });
+  },[toRef,amountRef,transferNi]);
+  return <div style={{ border:'1px solid gray', padding: '4px'}}>
+    <div>Transfer from <em>{account}</em></div>
+    <div>Transfer to <input ref={toRef} placeholder="to address 0x..." /></div>
+    <div>Transfer Amount <input ref={amountRef} placeholder="amount e.g. 0.01" /></div>
+    <Button onClick={() => { send() }} variant="contained">Send</Button>
+  </div>;
+};
+const ForEachAccount:React.FunctionComponent<{ Component:ComponentType<{ account:any }> }> = ({ Component }) => {
+  const { getAccounts } = useMetamask();
+  const [accounts,setAccount] = useState<any[]>();
+  const loadAccounts = useCallback(async () => {
+    var accounts = await getAccounts();
+    setAccount(accounts);
+  },[]);
+  useEffect(() => {
+    loadAccounts();
+  },[loadAccounts]);
+  return <ul style={{ listStyle: 'none' }}>
+    {
+      !accounts ? <li><em>Please wait, requesting accounts...</em></li> :
+      !accounts.length ? <li><em>No accounts found</em></li> :
+      accounts.map((account,i) => <li key={i}><Component account={account} /></li>)
+    }
+  </ul>;
+};
 
 const Home: NextPage = () => {
   return (
@@ -14,6 +75,17 @@ const Home: NextPage = () => {
 
       <main className={styles.main}>
         <h1 className={styles.title}>
+          Welcome to NiCoin UI
+        </h1>
+
+        <DisplayAccount showBalance />
+        <ForEachAccount Component={TransferPanel} />
+
+        <p className={styles.description}>
+          <AddNiCoinButton />
+        </p>
+
+        {/* <h1 className={styles.title}>
           Welcome to <a href="https://nextjs.org">Next.js!</a>
         </h1>
 
@@ -50,18 +122,18 @@ const Home: NextPage = () => {
               Instantly deploy your Next.js site to a public URL with Vercel.
             </p>
           </a>
-        </div>
+        </div> */}
       </main>
 
       <footer className={styles.footer}>
         <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
+          href="https://bit.ly/3QM2649"
           target="_blank"
           rel="noopener noreferrer"
         >
           Powered by{' '}
           <span className={styles.logo}>
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
+            <Image src="https://ipfs.io/ipfs/QmXTAJGy5m6SbcizWs5CtMeQPKzWKo6qhNQfiuCDEN5pB9" alt="Ni! Coin Logo" width={16} height={16} />
           </span>
         </a>
       </footer>
