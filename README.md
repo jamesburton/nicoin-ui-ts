@@ -1,3 +1,13 @@
+# NiCoin UI (TypeScript)
+
+This is a little test Web UI for Ni Coin.   At the time of writing the coin is deployed to mainnet, aurora mainnet and rinkeby.
+
+---------------
+
+*The rest is the standard nextjs readme content.*
+
+---------------
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started

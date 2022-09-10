@@ -8,6 +8,7 @@ import { ComponentType, useCallback, useEffect, useRef, useState, FunctionCompon
 import Button from '@mui/material/Button';
 import transferNi from 'actions/transferNi';
 import SiteFooter from 'components/SiteFooter';
+import getBalance from 'actions/getBalance';
 
 type DisplayAccountProps = {
   showBalance?: boolean;
@@ -26,7 +27,28 @@ const DisplayAccount:React.FunctionComponent<DisplayAccountProps> = ({ showBalan
   return <div>
     {/* <pre>{JSON.stringify(accounts,null,2)}</pre> */}
     <strong>Account: </strong>
-    {!accounts?.length ? <span>No account connected.</span> : <span>{accounts[0]}</span>}
+    {!accounts?.length ? <span>No account connected.</span> : <>
+      <span>{accounts[0]}</span>
+      {showBalance && <DisplayBalance address={accounts[0]} />}
+    </>}
+  </div>
+};
+type DisplayBalanceProps = {
+  address: string;
+};
+const DisplayBalance:React.FunctionComponent<DisplayBalanceProps> = ({ address }) => {
+  const [balance,setBalance] = useState<any[]>();
+  const loadBalance = useCallback(async () => {
+    var _balance = await getBalance(address);
+    setBalance(_balance);
+  },[getBalance,setBalance]);
+  useEffect(() => {
+    loadBalance();
+  },[loadBalance]);
+  return <div>
+    <strong>Balance: </strong>
+    <pre>{JSON.stringify(balance,null,2)}</pre>
+    {/* {!balance ? <span>No balance found.</span> : <span>{balance}</span>} */}
   </div>
 };
 //const TransferPanel = () => <h4>[TransferPanel]</h4>;
