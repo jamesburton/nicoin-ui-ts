@@ -4,14 +4,14 @@ import type EthereumProvider from 'types/EthereumProvider';
 
 // const { ethereum } : { ethereum: providers.ExternalProvider } = (window || {}) as any;
 
-export default async function getBalance(address:string) {
+export default async function getBalance(address:string):Promise<string|null> {
     //const { ethereum } : { ethereum: providers.ExternalProvider } = (window || {}) as any;
     const { ethereum } : { ethereum: EthereumProvider } = (window || {}) as any;
     // const tokenAddress = '0x0eFC93ceB0fd8409c8cb98649a8821ccFe576a62';
     const tokenAddress = 'ni-coin.eth';
-    const tokenSymbol = 'NI!';
+    // const tokenSymbol = 'NI!';
     const tokenDecimals = 18;
-    const tokenImage = 'https://ipfs.io/ipfs/QmXTAJGy5m6SbcizWs5CtMeQPKzWKo6qhNQfiuCDEN5pB9?filename=nicoin.svg';
+    // const tokenImage = 'https://ipfs.io/ipfs/QmXTAJGy5m6SbcizWs5CtMeQPKzWKo6qhNQfiuCDEN5pB9?filename=nicoin.svg';
 
     try {
         // From https://docs.ethers.io/v5/getting-started/#getting-started--connecting
@@ -30,6 +30,7 @@ export default async function getBalance(address:string) {
         return ethers.utils.formatUnits(balance, tokenDecimals);
     } catch (error) {
         console.log(error);
-        return false;
+        // return false;
+        return null;
     }
 };

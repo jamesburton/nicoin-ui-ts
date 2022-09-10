@@ -37,13 +37,13 @@ type DisplayBalanceProps = {
   address: string;
 };
 const DisplayBalance:React.FunctionComponent<DisplayBalanceProps> = ({ address }) => {
-  const [balance,setBalance] = useState<any[]>();
-  const loadBalance = useCallback(async () => {
+  const [balance,setBalance] = useState<string|null>();
+  const loadBalance = useCallback(async (address:string) => {
     var _balance = await getBalance(address);
     setBalance(_balance);
-  },[getBalance,setBalance]);
+  },[setBalance]);
   useEffect(() => {
-    loadBalance();
+    loadBalance(address);
   },[loadBalance]);
   return <div>
     <strong>Balance: </strong>
@@ -53,14 +53,19 @@ const DisplayBalance:React.FunctionComponent<DisplayBalanceProps> = ({ address }
 };
 //const TransferPanel = () => <h4>[TransferPanel]</h4>;
 const TransferPanel:FunctionComponent<{ account:string }> = ({account}) => {
-  const toRef = useRef<HTMLInputElement>();
-  const amountRef = useRef<HTMLInputElement>();
+  const toRef = useRef<HTMLInputElement>(null);
+  const amountRef = useRef<HTMLInputElement>(null);
   const send = useCallback(async () => {
     var to = toRef.current?.value;
     var amount = amountRef.current?.value;
     // alert(JSON.stringify({ to, amount }));
-    await transferNi({ to, amount });
-  },[toRef,amountRef,transferNi]);
+    if(!to)
+      return alert('Cannot send without a to address');
+    else if (!amount)
+      return alert('Cannot send without an amount');
+    else
+      await transferNi({ to, amount });
+  },[toRef,amountRef]);
   return <div style={{ border:'1px solid gray', padding: '4px'}}>
     <div>Transfer from <em>{account}</em></div>
     <div>Transfer to <input ref={toRef} placeholder="to address 0x..." /></div>

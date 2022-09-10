@@ -1,10 +1,14 @@
-import { ethers, providers } from 'ethers';
+import { ethers, providers, Event } from 'ethers';
 import NiCoinConfig from 'config/NiCoin-trimmed';
 import type EthereumProvider from 'types/EthereumProvider';
 
 // const { ethereum } : { ethereum: providers.ExternalProvider } = (window || {}) as any;
 
-export default async function transferNi({ to, amount }) {
+type TransferProps = {
+    to: string;
+    amount: string;
+};
+const transferNi = async ({ to, amount }: TransferProps):Promise<string|null> => {
     //const { ethereum } : { ethereum: providers.ExternalProvider } = (window || {}) as any;
     const { ethereum } : { ethereum: EthereumProvider } = (window || {}) as any;
     // const tokenAddress = '0x0eFC93ceB0fd8409c8cb98649a8821ccFe576a62';
@@ -50,9 +54,10 @@ export default async function transferNi({ to, amount }) {
         const response = await contract.transfer(to, ni);
         console.log(response);
         var results = await response.wait();
-        var transferEvent = results.events.find(e => e.event === 'Transfer');
+        var transferEvent:Event = results.events.find((e:Event) => e.event === 'Transfer');
         console.log('transferEvent', transferEvent);
-        alert(JSON.stringify(transferEvent));
+        // alert(JSON.stringify(transferEvent));
+        alert('Transfer completed (see log for details)');
         
         // // // See https://github.com/ethers-io/ethers.js/issues/3109#issuecomment-1166496858
         // const params = [{
@@ -68,15 +73,19 @@ export default async function transferNi({ to, amount }) {
         // const wasAdded = await provider.send('wallet_watchAsset', params);
         // console.log('watchAsset sent, response=', wasAdded);
 
-        if (wasAdded) {
-            console.log('Thanks for your interest!');
-        } else {
-            console.log('Your loss!');
-        }
+        // if (wasAdded) {
+        //     console.log('Thanks for your interest!');
+        // } else {
+        //     console.log('Your loss!');
+        // }
 
-        return wasAdded;
+        // return wasAdded;
+        return transferEvent?.transactionHash;
     } catch (error) {
         console.log(error);
-        return false;
+        //return false;
+        return null;
     }
 };
+
+export default transferNi;

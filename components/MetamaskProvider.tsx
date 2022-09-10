@@ -15,7 +15,7 @@ const MetamaskNotFound: NextPage = () => {
     return <>
         <div>Metamask not found</div>
         <div>
-            Install the extension from the <a href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en" target="_blank">chrome store</a>
+            Install the extension from the <a rel="noopener noreferrer" href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en" target="_blank">chrome store</a>
         </div>
     </>
 };
@@ -63,17 +63,17 @@ const MetamaskStatusSwitcher: NextPageWithChildren = ({ children }) => {
         var _accounts = await getAccounts(/*{ requestPermission: true }*/);
         console.log('loadAccounts: ', _accounts);
         setAccounts(_accounts);
-    },[metaState,setAccounts]);
+    },[metaState,setAccounts,getAccounts]);
     const loadChain = useCallback(async () => {
         var _chain = await getChain();
         console.log('loadChain: ', _chain);
         setChain(_chain);
-    },[metaState,setChain]);
+    },[metaState,setChain,getChain]);
 
     useEffect(() => {
         loadAccounts();
         loadChain(); 
-    },[]);
+    },[loadAccounts,loadChain]);
 
     return (
         !metaState.isAvailable ? <MetamaskNotFound /> :

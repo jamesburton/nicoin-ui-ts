@@ -1,4 +1,5 @@
-import { FunctionComponent } from "react";
+import Image from 'next/image';
+import { FunctionComponent } from 'react';
 
 type Props = {
     width?: number;
@@ -6,7 +7,7 @@ type Props = {
 };
 
 const NiCoinLogo:FunctionComponent<Props> = ({ width = 32, height = 32 }) => {
-    return <img src="https://ipfs.io/ipfs/QmXTAJGy5m6SbcizWs5CtMeQPKzWKo6qhNQfiuCDEN5pB9" {...{ width, height }} alt="Ni! coin logo" />;
+    return <Image src="https://ipfs.io/ipfs/QmXTAJGy5m6SbcizWs5CtMeQPKzWKo6qhNQfiuCDEN5pB9" {...{ width, height }} alt="Ni! coin logo" />;
 }
 
 export default NiCoinLogo;
