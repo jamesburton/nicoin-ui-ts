@@ -1,15 +1,11 @@
-export const NodeUrls = {
-    "mainnet": "https://mainnet.infura.io/v3/8b1c256e54f04ebf8a4c0b38458c6d71",
-    "rinkeby": "https://rinkeby.infura.io/v3/8b1c256e54f04ebf8a4c0b38458c6d71",
-    "kovan": "https://kovan.infura.io/v3/8b1c256e54f04ebf8a4c0b38458c6d71",
-    "ropsten": "https://ropsten.infura.io/v3/8b1c256e54f04ebf8a4c0b38458c6d71",
-    "goerli": "https://goerli.infura.io/v3/8b1c256e54f04ebf8a4c0b38458c6d71",
-    "sepolia": "https://sepolia.infura.io/v3/8b1c256e54f04ebf8a4c0b38458c6d71",
-    "aurora": "https://aurora-mainnet.infura.io/v3/8b1c256e54f04ebf8a4c0b38458c6d71",
-    "aurora-test": "https://aurora-testnet.infura.io/v3/8b1c256e54f04ebf8a4c0b38458c6d71",
-    "near": "https://near-mainnet.infura.io/v3/8b1c256e54f04ebf8a4c0b38458c6d71",
-    "near-test": "https://near-testnet.infura.io/v3/8b1c256e54f04ebf8a4c0b38458c6d71",
-};
+import "dotenv"
+const infuraKey = process.env.INFURA_KEY;
+// const infuraKey = process.env.NEXT_PUBLIC_INFURA_KEY;
+const NodeUrls = {};
+
+const infuraNetworks = ['mainnet','rinkeby','kovan','ropsten','goerli','sepolia','aurora','aurora-test','near','near-test'];
+if(infuraKey?.length)
+    infuraNetworks.forEach(network => NodeUrls[network] = `https://${network}.infura.io/v3/${INFURA_KEY}`);
 
 export const NiCoinContractAddresses = {
     "mainnet": "0x0eFC93ceB0fd8409c8cb98649a8821ccFe576a62",
