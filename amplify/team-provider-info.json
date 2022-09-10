@@ -1,0 +1,23 @@
+{
+    "prod": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-nicoinuits-prod-143338-authRole",
+            "UnauthRoleArn": "arn:aws:iam::194175976246:role/amplify-nicoinuits-prod-143338-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::194175976246:role/amplify-nicoinuits-prod-143338-authRole",
+            "Region": "eu-west-2",
+            "DeploymentBucketName": "amplify-nicoinuits-prod-143338-deployment",
+            "UnauthRoleName": "amplify-nicoinuits-prod-143338-unauthRole",
+            "StackName": "amplify-nicoinuits-prod-143338",
+            "StackId": "arn:aws:cloudformation:eu-west-2:194175976246:stack/amplify-nicoinuits-prod-143338/2e4a98d0-310d-11ed-8eb3-02e638078d9a",
+            "AmplifyAppId": "dnvy02hjnrh5g"
+        },
+        "categories": {
+            "hosting": {
+                "amplifyhosting": {
+                    "appId": "dnvy02hjnrh5g",
+                    "type": "cicd"
+                }
+            }
+        }
+    }
+}
