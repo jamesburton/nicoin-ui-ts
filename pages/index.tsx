@@ -8,50 +8,27 @@ import { ComponentType, useCallback, useEffect, useRef, useState, FunctionCompon
 import Button from '@mui/material/Button';
 import transferNi from 'actions/transferNi';
 import SiteFooter from 'components/SiteFooter';
-import getBalance from 'actions/getBalance';
+import useMetamaskContext from 'hooks/useMetamaskContext'
+import getBalance from 'actions/getBalance'
+// import getBalance from 'actions/getBalance';
 
 type DisplayAccountProps = {
   showBalance?: boolean;
 };
 const DisplayAccount:React.FunctionComponent<DisplayAccountProps> = ({ showBalance = false }) => {
-  const { getAccounts } = useMetamask();
-  const [accounts,setAccounts] = useState<any[]>();
-  const loadAccounts = useCallback(async () => {
-    var _accounts = await getAccounts();
-    setAccounts(_accounts);
-  },[getAccounts,setAccounts]);
-  useEffect(() => {
-    loadAccounts();
-  },[loadAccounts]);
-  // return <div>[DisplayAccount]</div>
+  const { accounts, balance, chain } = useMetamaskContext();
   return <div>
-    {/* <pre>{JSON.stringify(accounts,null,2)}</pre> */}
+    <div><strong>Network: </strong> {chain?.name ?? <em>Unknown</em>}</div>
     <strong>Account: </strong>
     {!accounts?.length ? <span>No account connected.</span> : <>
       <span>{accounts[0]}</span>
-      {showBalance && <DisplayBalance address={accounts[0]} />}
+      {showBalance && <div>
+        <strong>Balance: </strong>
+        {balance ?? typeof balance}
+      </div>}
     </>}
   </div>
 };
-type DisplayBalanceProps = {
-  address: string;
-};
-const DisplayBalance:React.FunctionComponent<DisplayBalanceProps> = ({ address }) => {
-  const [balance,setBalance] = useState<string|null>();
-  const loadBalance = useCallback(async (address:string) => {
-    var _balance = await getBalance(address);
-    setBalance(_balance);
-  },[setBalance]);
-  useEffect(() => {
-    loadBalance(address);
-  },[loadBalance]);
-  return <div>
-    <strong>Balance: </strong>
-    <pre>{JSON.stringify(balance,null,2)}</pre>
-    {/* {!balance ? <span>No balance found.</span> : <span>{balance}</span>} */}
-  </div>
-};
-//const TransferPanel = () => <h4>[TransferPanel]</h4>;
 const TransferPanel:FunctionComponent<{ account:string }> = ({account}) => {
   const toRef = useRef<HTMLInputElement>(null);
   const amountRef = useRef<HTMLInputElement>(null);
@@ -64,8 +41,9 @@ const TransferPanel:FunctionComponent<{ account:string }> = ({account}) => {
     else if (!amount)
       return alert('Cannot send without an amount');
     else
-      await transferNi({ to, amount });
-  },[toRef,amountRef]);
+      if(await transferNi({ to, amount }))
+        await getBalance(account);
+  },[account,toRef,amountRef]);
   return <div style={{ border:'1px solid gray', padding: '4px'}}>
     <div>Transfer from <em>{account}</em></div>
     <div>Transfer to <input ref={toRef} placeholder="to address 0x..." /></div>
@@ -74,15 +52,16 @@ const TransferPanel:FunctionComponent<{ account:string }> = ({account}) => {
   </div>;
 };
 const ForEachAccount:React.FunctionComponent<{ Component:ComponentType<{ account:any }> }> = ({ Component }) => {
-  const { getAccounts } = useMetamask();
-  const [accounts,setAccount] = useState<any[]>();
-  const loadAccounts = useCallback(async () => {
-    var accounts = await getAccounts();
-    setAccount(accounts);
-  },[]);
-  useEffect(() => {
-    loadAccounts();
-  },[loadAccounts]);
+  // const { getAccounts } = useMetamask();
+  // const [accounts,setAccount] = useState<any[]>();
+  // const loadAccounts = useCallback(async () => {
+  //   var accounts = await getAccounts();
+  //   setAccount(accounts);
+  // },[]);
+  // useEffect(() => {
+  //   loadAccounts();
+  // },[loadAccounts]);
+  const { accounts } = useMetamaskContext();
   return <ul style={{ listStyle: 'none' }}>
     {
       !accounts ? <li><em>Please wait, requesting accounts...</em></li> :
@@ -154,8 +133,6 @@ const Home: NextPage = () => {
 
         <SiteFooter />
       </main>
-
-      {/* <SiteFooter /> */}
     </div>
   )
 }

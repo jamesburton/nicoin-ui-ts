@@ -18,6 +18,7 @@ const nextConfig = withMDX({
   },
   // Append the default value with md extensions
   pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
+  images: { unoptimized: true }, // Added to allow 'next export' without adding a separate image provider
 })
 
 module.exports = nextConfig
