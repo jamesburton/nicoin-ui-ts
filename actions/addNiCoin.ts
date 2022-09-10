@@ -1,4 +1,4 @@
-import { ethers, providers } from 'ethers';
+// import { ethers, providers } from 'ethers';
 // import NiCoinConfig from 'config/NiCoin-trimmed';
 import type EthereumProvider from 'types/EthereumProvider';
 
@@ -7,8 +7,8 @@ import type EthereumProvider from 'types/EthereumProvider';
 export default async function addNiCoin() {
     //const { ethereum } : { ethereum: providers.ExternalProvider } = (window || {}) as any;
     const { ethereum } : { ethereum: EthereumProvider } = (window || {}) as any;
-    const tokenAddress = '0x0eFC93ceB0fd8409c8cb98649a8821ccFe576a62';
-    // const tokenAddress = 'ni-coin.eth';
+    // const tokenAddress = '0x0eFC93ceB0fd8409c8cb98649a8821ccFe576a62';
+    const tokenAddress = 'ni-coin.eth';
     const tokenSymbol = 'NI!';
     const tokenDecimals = 18;
     const tokenImage = 'https://ipfs.io/ipfs/QmXTAJGy5m6SbcizWs5CtMeQPKzWKo6qhNQfiuCDEN5pB9?filename=nicoin.svg';

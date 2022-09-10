@@ -1,5 +1,5 @@
 // Based on ethers.providers.ExternalProvider
-export type EthereumProvider = {
+type EthereumProvider = {
     isMetaMask?: boolean;
     isStatus?: boolean;
     host?: string;
@@ -10,3 +10,5 @@ export type EthereumProvider = {
     //request?: (request: { method: string, params?: Array<any> }) => Promise<any>
     request?: (request: { method: string, params?: Array<any>|any }) => Promise<any>
 }
+
+export default EthereumProvider;
