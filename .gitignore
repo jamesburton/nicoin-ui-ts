@@ -1,5 +1,9 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+# Exclude .env other than example (configure through environment instead when deploying, or use local .env for dev)
+.env*
+!.env.example
+
 # dependencies
 /node_modules
 /.pnp

@@ -1,12 +1,13 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import Image from 'next/image'
+// import Image from 'next/image'
 import styles from '../styles/Home.module.css'
-import AddNiCoinButton from 'components/AddNiCoinButton'
+import AddNiCoinButton from 'components/buttons/AddNiCoinButton'
 import { useMetamask } from 'use-metamask'
 import { ComponentType, useCallback, useEffect, useRef, useState, FunctionComponent, MutableRefObject } from 'react'
 import Button from '@mui/material/Button';
 import transferNi from 'actions/transferNi';
+import SiteFooter from 'components/SiteFooter';
 
 type DisplayAccountProps = {
   showBalance?: boolean;
@@ -123,20 +124,11 @@ const Home: NextPage = () => {
             </p>
           </a>
         </div> */}
+
+        <SiteFooter />
       </main>
 
-      <footer className={styles.footer}>
-        <a
-          href="https://bit.ly/3QM2649"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <span className={styles.logo}>
-            <Image src="https://ipfs.io/ipfs/QmXTAJGy5m6SbcizWs5CtMeQPKzWKo6qhNQfiuCDEN5pB9" alt="Ni! Coin Logo" width={16} height={16} />
-          </span>
-        </a>
-      </footer>
+      {/* <SiteFooter /> */}
     </div>
   )
 }
